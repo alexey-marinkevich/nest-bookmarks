@@ -14,7 +14,7 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     const token = await this.authService.signup(body);
-    return res.set('x-auth-header', token).status(200).end();
+    return res.set('x-auth-token', token).status(200).end();
   }
 
   @Post('signin')
@@ -23,6 +23,6 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     const token = await this.authService.signin(body);
-    return res.set('x-auth-header', token).status(200).end();
+    return res.set('x-auth-token', token).status(200).end();
   }
 }
