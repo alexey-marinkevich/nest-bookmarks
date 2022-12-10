@@ -28,4 +28,3 @@ model Bookmark {
   description String?
   link        String
 }
-
