@@ -30,15 +30,9 @@ export class AuthService {
 
     const createdUser = await this.prisma.user.create({
       data: { email, password: hashedPassword },
-      select: { id: true, email: true },
     });
-    console.log(createdUser);
-    const token = await this.signToken(
-      createdUser.id.toString(),
-      createdUser.email,
-    );
 
-    return `Bearer ${token}`;
+    return this.signToken(createdUser.id, createdUser.email);
   }
 
   async signin(body: AuthDto) {
@@ -60,19 +54,20 @@ export class AuthService {
       throw new ForbiddenException('Credentials is incorrect');
     }
 
-    delete user.password;
-    return user;
+    return this.signToken(user.id, user.email);
   }
 
-  signToken(userId: string, email: string) {
+  async signToken(userId: number, email: string) {
     const data = {
-      sub: userId,
+      id: userId,
       email,
     };
 
-    return this.jwt.signAsync(data, {
+    const token = await this.jwt.signAsync(data, {
       expiresIn: '15m',
       secret: this.config.get('JWT_SECRET_KEY'),
     });
+
+    return `Bearer ${token}`;
   }
 }

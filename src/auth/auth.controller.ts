@@ -18,7 +18,11 @@ export class AuthController {
   }
 
   @Post('signin')
-  signin(@Body() body: AuthDto) {
-    return this.authService.signin(body);
+  async signin(
+    @Body() body: AuthDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const token = await this.authService.signin(body);
+    return res.set('x-auth-header', token).status(200).end();
   }
 }
