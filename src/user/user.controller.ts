@@ -1,4 +1,5 @@
 import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
+import { Request } from 'express';
 import { JwtAuthGuard } from 'src/auth/guard';
 import { UserService } from './user.service';
 
@@ -8,8 +9,8 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/about-me')
-  aboutMe() {
-    return this.userService.aboutMe();
+  aboutMe(@Req() req: Request) {
+    return this.userService.aboutMe(req.user);
   }
 
   @UseGuards(JwtAuthGuard)
