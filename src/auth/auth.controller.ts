@@ -11,7 +11,7 @@ export class AuthController {
     const token = await this.authService.signup(body);
 
     return {
-      'x-auth-token': token,
+      Authorization: token,
     };
   }
 
@@ -20,7 +20,7 @@ export class AuthController {
     const token = await this.authService.signin(body);
 
     return {
-      'x-auth-token': token,
+      Authorization: token,
     };
   }
 }
